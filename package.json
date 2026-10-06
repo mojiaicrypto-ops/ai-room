@@ -1,0 +1,23 @@
+{
+  "name": "ai-room",
+  "version": "0.1.0",
+  "description": "Lightweight multi-agent coordination room on Cloudflare Workers",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "room": "./cli/room.mjs"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "cli": "node cli/room.mjs"
+  },
+  "keywords": ["ai", "agent", "chat", "room", "cloudflare", "durable-objects"],
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.99.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
