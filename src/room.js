@@ -21,9 +21,16 @@ export class Room {
 
     this.state.blockConcurrencyWhile(async () => {
       const stored = await this.state.storage.get(["messages", "createdAt", "roomId"]);
-      this.messages = stored.messages || [];
-      this.createdAt = stored.createdAt || Date.now();
-      this.roomId = stored.roomId || "";
+      this.messages = stored.get("messages") || [];
+      this.createdAt = stored.get("createdAt") || Date.now();
+      this.roomId = stored.get("roomId") || "";
+      // Hibernation keeps sockets alive but recreates this instance and its Map.
+      for (const ws of this.state.getWebSockets()) {
+        const session = ws.deserializeAttachment();
+        if (ws.readyState === 1 && session?.name && ["ai", "human"].includes(session.role)) {
+          this.sessions.set(ws, { name: session.name, role: session.role });
+        }
+      }
     });
   }
 
@@ -102,6 +109,7 @@ export class Room {
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
 
+    server.serializeAttachment({ name, role });
     this.state.acceptWebSocket(server);
     this.sessions.set(server, { name, role });
 
@@ -163,6 +171,8 @@ export class Room {
   }
 
   async webSocketClose(ws, code, reason, wasClean) {
+    // This compatibility date predates automatic replies to Close frames.
+    ws.close(1000, "Connection closed");
     const session = this.sessions.get(ws);
     this.sessions.delete(ws);
     if (session) {
