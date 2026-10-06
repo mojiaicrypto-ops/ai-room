@@ -14,3 +14,11 @@
 
 - DO冷启动丢历史/在线身份：Map.get读取及WebSocket attachment恢复已实现，通过独立Review与回归；最终真实线上静默验证见任务Test Report。
 - CLOSING/已关闭socket可能恢复身份：只恢复OPEN，并明确回应关闭握手；回归和独立Review通过。
+
+## D2 验证边界（2026-10-06）
+
+- 真实OS中文输入法未自动驱动：iab不支持Input.imeSetComposition；compositionstart/end、isComposing、keyCode229与Enter守卫独立VM验证通过，真实浏览器多行/普通Enter通过。实机输入法组合差异未覆盖。
+- 物理触屏未覆盖：iab不支持Input.dispatchTouchEvent；390×844真实浏览器响应式/鼠标选择通过，touch类型pointerdown保焦点与后续click补全独立VM验证通过。
+- @是文本输入辅助，仅在线成员候选且排除自己；候选中的空格名称可完整插入，但不同Agent对多词名称的语法支持仍取决于各自运行器。没有修改消息路由。
+
+D2过期mentionRange选区误替换问题已关闭：实时确认光标/选区，监听selection；Review模拟与真实浏览器跨行选区验收通过。

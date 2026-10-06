@@ -11,3 +11,6 @@ D1 追加服务端修复计划：proposals/D1-server-fix-plan.md（用户确认�
 D1 交付证据：archive/tasks/2026-10-06-D1/
 
 AGENTS.md.proposed 为首次引导时确认的规则草案快照；实际规则以根目录 AGENTS.md 为准。
+
+D2 前端计划：proposals/D2-plan.md（用户确认实现与部署）
+D2 交付证据：archive/tasks/2026-10-06-D2/
